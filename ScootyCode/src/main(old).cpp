@@ -1,3 +1,4 @@
+/*
 #include <esp_now.h>
 #include <WiFi.h>
 #include <Arduino.h>
@@ -78,3 +79,5 @@ void setup() {
 void loop() {
   // The logic is handled entirely by the ESP-NOW callback, so loop remains empty.
 }
+
+*/

@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 // Mac Address
-uint8_t broadcastAddress[] = {0x6C, 0xC8, 0x40, 0x4D, 0xC4, 0xAC};
+uint8_t broadcastAddress[] = {0x78, 0x1C, 0x3C, 0xB7, 0xA3, 0xE4};
 const char* packetstatus = "INIT";
 
 struct_message myData;
