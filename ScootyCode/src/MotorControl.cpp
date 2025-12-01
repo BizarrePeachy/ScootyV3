@@ -34,13 +34,13 @@ void setMotor1(int dir1, int dir2, int speed) {
   // If left side is going backwards, swap dir1 and dir2 here
   digitalWrite(MOTOR_1_IN1, dir2); // Swapped
   digitalWrite(MOTOR_1_IN2, dir1); // Swapped
-  ledcWrite(PWM_CHANNEL_1, speed);  
+  ledcWrite(PWM_CHANNEL_1, speed);
 }
 
 void setMotor2(int dir1, int dir2, int speed) {
   // If left side is going backwards, swap dir1 and dir2 here
-  digitalWrite(MOTOR_2_IN3, dir2); // Swapped
-  digitalWrite(MOTOR_2_IN4, dir1); // Swapped
+  digitalWrite(MOTOR_2_IN3, dir2);
+  digitalWrite(MOTOR_2_IN4, dir1);
   ledcWrite(PWM_CHANNEL_2, speed);
 }
 
@@ -63,19 +63,22 @@ void stopAllMotors() {
   setMotor4(LOW, LOW, 0);
 }
 
+// Takes in data coming in from esp-now and processes it through motor control functions
 void processMotorControl(const struct_message& data) {
     int masterSpeed = 0;
     int steerAmount = 0;
 
+    // Processes flex sensor data and moves forward or backward
     if (data.flex1Status == true && data.flex2Status == false) {
         masterSpeed = DEFAULT_SPEED;
     } else if (data.flex2Status == true && data.flex1Status == false) {
         masterSpeed = -DEFAULT_SPEED;
     }
 
+    // Steering algorithm
     if (data.flex1Status == true || data.flex2Status == true) {
         steerAmount = map(data.roll, -MAX_STEERING_ROLL_ANGLE, MAX_STEERING_ROLL_ANGLE, -255, 255);
-        
+
         steerAmount = constrain(steerAmount, -255, 255);
     } else {
         steerAmount = 0;
@@ -87,6 +90,8 @@ void processMotorControl(const struct_message& data) {
     int absLeftSpeed = abs(leftMotorSpeed);
     int absRightSpeed = abs(rightMotorSpeed);
 
+
+    // TODO: Fix the motors so that it will continue to use all motors even when the steering is at its maximum
       // Left Side Motors (1 and 2)
   if (leftMotorSpeed > 0) { // Forward
     setMotor1(HIGH, LOW, absLeftSpeed);

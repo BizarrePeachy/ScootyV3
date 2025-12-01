@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 // variables
-#define LED_PIN 5
+#define LED_PIN 5 // Status light diode on top of robot
 
 void setup() {
     Serial.begin(115200);
@@ -12,11 +12,11 @@ void setup() {
     pinMode(LED_PIN, OUTPUT);
     espNowInit();
 
-    MotorInit();
+    MotorInit(); // Initialize motor control
 
-    esp_now_register_recv_cb(OnDataRecv);
+    esp_now_register_recv_cb(OnDataRecv); // Register callback function for receiving data from esp-now
 }
 
 void loop() {
-    processMotorControl(myData);
+    processMotorControl(myData); // Takes in data coming in from esp-now and processes it through motor control functions
 }
