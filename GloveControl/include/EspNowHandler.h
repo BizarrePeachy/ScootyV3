@@ -7,6 +7,8 @@
 typedef struct struct_message {
   bool flex1Status;
   bool flex2Status;
+  bool blueButton;
+  bool redButton;
   float pitch;
   float roll;
 } struct_message;

@@ -1,9 +1,7 @@
 #include "MotorControl.h"
 #include "EspHandler.h"
 #include <Arduino.h>
-
-// variables
-#define LED_PIN 5 // Status light diode on top of robot
+#include "LedLogic.h"
 
 void setup() {
     Serial.begin(115200);
@@ -19,4 +17,5 @@ void setup() {
 
 void loop() {
     processMotorControl(myData); // Takes in data coming in from esp-now and processes it through motor control functions
+
 }

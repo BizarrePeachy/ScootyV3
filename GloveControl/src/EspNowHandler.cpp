@@ -45,6 +45,7 @@ void espNowInit() {
     Serial.println("ESP-NOW Initialized and Peer Added.");
 }
 
+// Send out the ESP-NOW data
 void espNowSend() {
   // Send message via ESP-NOW
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));

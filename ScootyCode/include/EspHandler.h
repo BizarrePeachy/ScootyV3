@@ -5,11 +5,14 @@
 #include <WiFi.h>
 #include <Arduino.h>
 
+// Define a data structure
 typedef struct struct_message {
-    bool flex1Status;
-    bool flex2Status;
-    float pitch;
-    float roll;
+  bool flex1Status;
+  bool flex2Status;
+  bool blueButton;
+  bool redButton;
+  float pitch;
+  float roll;
 } struct_message;
 
 extern struct_message myData;

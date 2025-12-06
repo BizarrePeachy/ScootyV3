@@ -63,6 +63,14 @@ void stopAllMotors() {
   setMotor4(LOW, LOW, 0);
 }
 
+// Dynamic Breaking System
+void breakAllMotors() {
+  setMotor1(HIGH, HIGH, MAX_DUTY_CYCLE);
+  setMotor2(HIGH, HIGH, MAX_DUTY_CYCLE);
+  setMotor3(HIGH, HIGH, MAX_DUTY_CYCLE);
+  setMotor4(HIGH, HIGH, MAX_DUTY_CYCLE);
+}
+
 // Takes in data coming in from esp-now and processes it through motor control functions
 void processMotorControl(const struct_message& data) {
     int masterSpeed = 0;
@@ -75,6 +83,7 @@ void processMotorControl(const struct_message& data) {
         masterSpeed = -DEFAULT_SPEED;
     }
 
+    /*
     // Steering algorithm
     if (data.flex1Status == true || data.flex2Status == true) {
         steerAmount = map(data.roll, -MAX_STEERING_ROLL_ANGLE, MAX_STEERING_ROLL_ANGLE, -255, 255);
@@ -83,9 +92,10 @@ void processMotorControl(const struct_message& data) {
     } else {
         steerAmount = 0;
     }
+    */
 
-    int leftMotorSpeed = masterSpeed - steerAmount;
-    int rightMotorSpeed = masterSpeed + steerAmount;
+    int leftMotorSpeed = masterSpeed + steerAmount;
+    int rightMotorSpeed = masterSpeed - steerAmount;
 
     int absLeftSpeed = abs(leftMotorSpeed);
     int absRightSpeed = abs(rightMotorSpeed);
@@ -95,24 +105,24 @@ void processMotorControl(const struct_message& data) {
       // Left Side Motors (1 and 2)
   if (leftMotorSpeed > 0) { // Forward
     setMotor1(HIGH, LOW, absLeftSpeed);
-    setMotor4(HIGH, LOW, absLeftSpeed);
+    setMotor2(HIGH, LOW, absLeftSpeed);
   } else if (leftMotorSpeed < 0) { // Backward
     setMotor1(LOW, HIGH, absLeftSpeed);
-    setMotor4(LOW, HIGH, absLeftSpeed);
+    setMotor2(LOW, HIGH, absLeftSpeed);
   } else { // Stop
     setMotor1(LOW, LOW, 0);
-    setMotor4(LOW, LOW, 0);
+    setMotor2(LOW, LOW, 0);
   }
 
   // Right Side Motors (3 and 4)
   if (rightMotorSpeed > 0) { // Forward
     setMotor3(HIGH, LOW, absRightSpeed);
-    setMotor2(HIGH, LOW, absRightSpeed);
+    setMotor4(HIGH, LOW, absRightSpeed);
   } else if (rightMotorSpeed < 0) { // Backward
     setMotor3(LOW, HIGH, absRightSpeed);
-    setMotor2(LOW, HIGH, absRightSpeed);
+    setMotor4(LOW, HIGH, absRightSpeed);
   } else { // Stop
     setMotor3(LOW, LOW, 0);
-    setMotor2(LOW, LOW, 0);
+    setMotor4(LOW, LOW, 0);
   }
 }

@@ -7,6 +7,10 @@
 #define FLEX_PIN_1 32
 #define FLEX_PIN_2 33
 
+// Buttons
+#define blueButtonPin 19
+#define redButtonPin 18
+
 // LED Pins (Moved from 34/35 to valid output pins 4/16)
 int Flex1Led = 4;
 int Flex2Led = 13;
@@ -18,6 +22,8 @@ float roll = 0.0;
 // variables for sensor states
 bool flex1_status = false;
 bool flex2_status = false;
+bool blueButtonPressed = false;
+bool redButtonPressed = false;
  
 void setup() {
   
@@ -29,6 +35,9 @@ void setup() {
 
   pinMode(Flex1Led, OUTPUT);
   pinMode(Flex2Led, OUTPUT);
+  pinMode(blueButtonPin, INPUT_PULLUP);
+  pinMode(redButtonPin, INPUT_PULLUP);
+
 
   // Start Screen
   screenInit();
@@ -62,11 +71,28 @@ void CheckFlexValues(int flex1_value, int flex2_value) {
     flex2_status = true;
   }
 }
+
+void checkButtonStates(bool buttonState1, bool buttonState2) {
+  if (buttonState1 == LOW) {
+    blueButtonPressed = true;
+  } else {
+    blueButtonPressed = false;
+  }
+
+  if (buttonState2 == LOW) {
+    redButtonPressed = true;
+  } else {
+    redButtonPressed = false;
+  }
+
+}
  
 void loop() {
 
   int flex1_value = analogRead(FLEX_PIN_1);
   int flex2_value = analogRead(FLEX_PIN_2);
+  int blueButtonState = digitalRead(blueButtonPin);
+  int redButtonState = digitalRead(redButtonPin);
 
   // MPU Data
   mpuReadAndCalculate(&pitch, &roll);
@@ -77,7 +103,8 @@ void loop() {
   // Prepare esp-now packets
   myData.flex1Status = flex1_status;
   myData.flex2Status = flex2_status;
-
+  myData.blueButton = blueButtonPressed;
+  myData.redButton = redButtonPressed;
   myData.pitch = pitch;
   myData.roll = roll;
 

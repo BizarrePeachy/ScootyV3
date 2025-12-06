@@ -4,8 +4,9 @@
 #include <Arduino.h>
 #include "EspHandler.h"
 
-#define DEFAULT_SPEED 200
 #define TURN_ADJUST 100
+#define MAX_DUTY_CYCLE 255
+#define DEFAULT_SPEED 255
 
 const float MAX_STEERING_ROLL_ANGLE = 25.0f;
 
@@ -46,5 +47,6 @@ void setMotor4(int dir1, int dir2, int speed);
 void MotorInit();
 void stopAllMotors();
 void processMotorControl(const struct_message& data);
+void breakAllMotors();
 
 #endif
